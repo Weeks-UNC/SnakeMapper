@@ -1,0 +1,10 @@
+# conda env to install python2.7, numpy, and cython
+name: MaP
+channels:
+  - conda-forge
+  - defaults
+  - bioconda
+dependencies:
+  - python=2.7
+  - cython
+  - numpy
