@@ -1,0 +1,9 @@
+name: MaP
+channels:
+  - conda-forge
+  - defaults
+  - bioconda
+dependencies:
+  - python=2.7
+  - cython
+  - numpy

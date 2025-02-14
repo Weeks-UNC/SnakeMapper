@@ -1,0 +1,100 @@
+# if these are not installed in your path, an absolute path should be specified here.
+exe_locations:
+    shapemapper: shapemapper
+    ringmapper: ringmapper.py
+    pairmapper: pairmapper.py
+    dancemapper: DanceMapper.py
+    foldclusters: foldClusters.py
+    fold: Fold-smp
+    partition: partition-smp
+    probabilityplot: ProbabilityPlot
+
+# Pipeline will submit once for each sample/target pair
+
+# This part is currently a little bit rigid, so read carefully.
+# The target name, fasta file name, and fasta header must all match.
+# The names cannot contain underscores.
+# A new fasta file with all uppercase letters will be created for RNAstructure steps.
+
+# The sample names are the 1st indented lines: sample1 and sample2 below.
+# These must be unique and cannot contain underscores.
+
+# All output files will be prefixed with {sample}_{target}. (underscore added by snakemake)
+
+# List of samples and their fastq files
+samples:
+    sample1:
+        target: fastas/myrna.fa
+        amplicon: True
+        primers: fastas/myrna_primers.fa
+        dms: True
+        modified:
+            R1: data/sample1_R1.fastq.gz
+            R2: data/sample1_R2.fastq.gz
+        untreated:
+            R1: data/sample3_R1.fastq.gz
+            R2: data/sample3_R2.fastq.gz
+    sample2:
+        target: fastas/myrna.fa
+        amplicon: True
+        primers: fastas/myrna_primers.fa
+        dms: True
+        modified:
+            folders: data/sample2/
+        untreated:
+            folders: data/sample4/
+
+# List of steps to run. Comment out steps you don't want to run with a "#".
+# NOTE: DanceMapper runs in two steps, model fitting and calculation of RINGs/PAIRs
+# This saves significant computing resources.
+steps:
+    # MaP suite steps
+    - shapemapper               # SHAPE reactivity mapping
+    - ringmapper                # RING-MaP
+    - pairmapper                # PAIR-MaP
+    - dancemapper_fit           # fitting DANCE-MaP model
+    - dancemapper_rings_pairs   # PAIR- and RING-MaP with DANCE-MaP model
+    # MFE structures AND pairing probabilities
+    - fold_nodata               # with no data
+    - fold_popavg               # with population average reactivities
+    - fold_popavg_pairs         # with population average reactivities and PAIRs
+    - fold_cluster              # with clustered reactivities
+    - fold_cluster_pairs        # with clustered reactivities and PAIRs
+    - plot                      # plot structures and put in the report
+
+
+# Below are command line parametersSetting parameter to True will enable the parameter with no arguments.
+# e.g.: dms: True == "--dms"
+# Setting a parameter to another value will use that value.
+# e.g.: primers: my_primers.fa == "--primers my_primers.fa"
+# In order to use no arguments for a step, set it to False.
+# e.g.: ringmapper and pairmapper below
+# shapemapper documentation: https://github.com/Weeks-UNC/shapemapper2
+# ring/pairmapper documentation: https://github.com/Weeks-UNC/ringmapper
+# dancemapper documentation: https://github.com/MustoeLab/DanceMapper
+# RNAstructure documentation: https://rna.urmc.rochester.edu/Text/index.html
+parameters:
+    # MaP suite steps
+    shapemapper:
+        output-parsed-mutations: True
+        output-counted-mutations: True
+        per-read-histograms: True
+    ringmapper: False
+    pairmapper:
+        override_qualcheck: True
+    dancemapper_fit:
+        fit: True
+        undersample: 1000000
+        maxcomponents: 4
+    dancemapper_rings_pairs:
+        ring: True
+        pairmap: True
+    # RNAstructure steps
+    fold_nodata:
+        maxdistance: 600
+    fold_popavg:
+        maxdistance: 600
+    fold_popavg_pairs:
+        maxdistance: 600
+    fold_cluster: False
+    fold_cluster_pairs: False

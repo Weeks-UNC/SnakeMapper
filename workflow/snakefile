@@ -1,0 +1,16 @@
+from pathlib import Path
+
+from snakemake.utils import validate
+
+
+# container: "docker://psirving/SnakeMapper:latest"
+
+configfile: "config/config.yaml"
+
+include: "rules/common.smk"
+include: "rules/fold.smk"
+include: "rules/mapper.smk"
+include: "rules/prep_fastas.smk"
+
+rule all:
+    input: get_final_output(),
