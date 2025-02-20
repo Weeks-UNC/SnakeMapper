@@ -1,7 +1,7 @@
 import rnavigate as rnav
 import yaml
 from pathlib import Path
-import
+from argparse import ArgumentParser
 
 # get the path of the current file
 file_path = Path(__file__).resolve()
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # Get rnav samples
     rnav_sample = get_rnav_sample(args.sample, args.target)
-    rnav_dance_samples = get_rnav_dance_samples(args.sample, args.target)
+    rnav_dance_samples = None
     single_state_plots = {
         "fold_nodata": plot_nodata,
         "fold_popavg": plot_popavg,
@@ -154,9 +154,11 @@ if __name__ == "__main__":
     }
     for step in config["steps"]:
         if step in single_state_plots:
-            plot = plots[step](rnav_sample)
+            plot = single_state_plots[step](rnav_sample)
         elif step in multi_state_plots:
-            plot = plots[step](rnav_dance_samples)
+            if rnav_dance_samples is None:
+                rnav_dance_samples = get_rnav_dance_samples(args.sample, args.target)
+            plot = multi_state_plots[step](rnav_dance_samples)
         else:
             continue
         suffix = step.split("_", 1)[1]
