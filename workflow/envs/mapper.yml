@@ -7,3 +7,6 @@ dependencies:
   - python=2.7
   - cython
   - numpy
+  - matplotlib
+  - scipy
+  - pandas
