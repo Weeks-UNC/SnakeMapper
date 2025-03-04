@@ -1,10 +1,10 @@
 # if these are not installed in your path, an absolute path should be specified here.
 exe_locations:
-    shapemapper: shapemapper
-    ringmapper: ringmapper.py
-    pairmapper: pairmapper.py
-    dancemapper: DanceMapper.py
-    foldclusters: foldClusters.py
+    shapemapper: /proj/kweeks/bin/shapemapper-2.3.0/shapemapper
+    ringmapper: /proj/kweeks/bin/RingMapper_v1.2/ringmapper.py
+    pairmapper: /proj/kweeks/bin/RingMapper_v1.2/pairmapper.py
+    dancemapper: /proj/kweeks/bin/DanceMapper/DanceMapper.py
+    foldclusters: /proj/kweeks/bin/DanceMapper/foldClusters.py
     fold: Fold-smp
     partition: partition-smp
     probabilityplot: ProbabilityPlot
@@ -79,6 +79,7 @@ parameters:
         output-parsed-mutations: True
         output-counted-mutations: True
         per-read-histograms: True
+        overwrite: True
     ringmapper: False
     pairmapper:
         override_qualcheck: True

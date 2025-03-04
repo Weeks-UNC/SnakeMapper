@@ -9,7 +9,7 @@ module add anaconda
 snakemake \
     --use-conda \
         --conda-frontend conda \
-        --conda-prefix /opt/conda/envs \
+        --conda-prefix /proj/kweeks/bin/snakemake_envs/ \
     --cores 8 \
     --rerun-incomplete \
     --slurm \
@@ -17,4 +17,4 @@ snakemake \
     --jobs 20 \
     --latency-wait 30
 
-snakemake --report report.html
+# snakemake --report report.html
