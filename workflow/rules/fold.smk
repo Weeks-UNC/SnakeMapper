@@ -12,7 +12,7 @@ rule fold_nodata:
     shell: """
         {params.fold} {input} {output.ct} {params.config} \
         && {params.partition} {input} {output.pfs} {params.config} \
-        && {params.probplot} -t {output.pfs} {output.dp} \
+        && {params.probabilityplot} -t {output.pfs} {output.dp} \
         > {log}
     """
 
@@ -112,12 +112,12 @@ rule fold_cluster_pairs:
     conda: "envs/mapper.yml"
     group: "{sample}_{target}_cluster_pairs"
     shell: """
-        {params.foldclusters} {input.reactivities} \
+        python {params.foldclusters} {input.reactivities} \
             results/dancemapper/{wildcards.sample}_{wildcards.target}_pairs \
             --bp results/dancemapper/{wildcards.sample}_{wildcards.target} \
             {params.config} \
             > {log.fold}
-        {params.foldclusters} {input.reactivities} \
+        python {params.foldclusters} {input.reactivities} \
             results/dancemapper/{wildcards.sample}_{wildcards.target}_pairs \
             --bp results/dancemapper/{wildcards.sample}_{wildcards.target} \
             {params.config} --prob
@@ -125,6 +125,7 @@ rule fold_cluster_pairs:
     """
 
 
+# TODO: maybe use script instead of shell
 rule plot:
     input: *[str(output_patterns[k]["done"]) for k in config["steps"] if k != "plot"]
     output:
@@ -136,7 +137,7 @@ rule plot:
     conda: "envs/rnavigate.yml"
     group: "{sample}_{target}_all"
     shell: """
-        python {params.basedir}/scripts/fold_all.py \
+        python {params.basedir}/scripts/rnav_samples.py \
             --sample {wildcards.sample} \
             --target {wildcards.target} \
         > {log}

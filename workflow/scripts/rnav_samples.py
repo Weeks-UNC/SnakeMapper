@@ -6,30 +6,36 @@ from argparse import ArgumentParser
 # get the path of the current file
 file_path = Path(__file__).resolve()
 # get the parent directory of the current file
-config = yaml.safe_load(open(file_path.parent.parent / "config/config.yaml"))  #load config.yaml file
+config = yaml.safe_load(open(file_path.parent.parent.parent / "config/config.yaml"))  #load config.yaml file
 
 def get_rnav_sample(sample, target):
     single_state_steps = {
-        "shapemapper": {"shapemap": [rnav.data.ShapeMaP, {"input_data": f"results/shapemapper/{sample}_{target}_profile.txt"}]},
-        "ringmapper": {"ringmap": [rnav.data.RINGMaP, {"input_data": f"results/ringmapper/{sample}_{target}_ringmap.txt", "sequence": "sequence"}]},
-        "pairmapper": {"pairmap": [rnav.data.PAIRMaP, {"input_data": f"results/pairmapper/{sample}_{target}-pairmap.txt", "sequence": "sequence"}]},
+        "shapemapper": {
+            "shapemap": f"results/shapemapper/{sample}_{target}_profile.txt"
+        },
+        "ringmapper": {
+            "ringmap": {"ringmap": f"results/ringmapper/{sample}_{target}_ringmap.txt", "sequence": "sequence"}
+        },
+        "pairmapper": {
+            "pairmap": {"pairmap": f"results/pairmapper/{sample}_{target}-pairmap.txt", "sequence": "sequence"}
+        },
         "fold_nodata": {
-            "ss_nodata": [rnav.data.SecondaryStructure, {"input_data": f"results/fold/{sample}_{target}_nodata.ct"}],
-            "pp_nodata": [rnav.data.PairingProbability, {"input_data": f"results/fold/{sample}_{target}_nodata.dp", "sequence": "sequence"}],
+            "ss_nodata": {"ss": f"results/fold/{sample}_{target}_nodata.ct"},
+            "pp_nodata": {"pairprob": f"results/fold/{sample}_{target}_nodata.dp", "sequence": "sequence"},
         },
         "fold_popavg": {
-            "ss_popavg": [rnav.data.SecondaryStructure, {"input_data": f"results/fold/{sample}_{target}_popavg.ct"}],
-            "pp_popavg": [rnav.data.PairingProbability, {"input_data": f"results/fold/{sample}_{target}_popavg.dp", "sequence": "sequence"}],
+            "ss_popavg": {"ss": f"results/fold/{sample}_{target}_popavg.ct"},
+            "pp_popavg": {"pairprob": f"results/fold/{sample}_{target}_popavg.dp", "sequence": "sequence"},
         },
         "fold_popavg_pairs": {
-            "ss_popavg_pairs": [rnav.data.SecondaryStructure, {"input_data": f"results/fold/{sample}_{target}_popavg_pairs.ct"}],
-            "pp_popavg_pairs": [rnav.data.PairingProbability, {"input_data": f"results/fold/{sample}_{target}_popavg_pairs.dp", "sequence": "sequence"}],
+            "ss_popavg_pairs": {"ss": f"results/fold/{sample}_{target}_popavg_pairs.ct"},
+            "pp_popavg_pairs": {"pairprob": f"results/fold/{sample}_{target}_popavg_pairs.dp", "sequence": "sequence"},
         },
     }
-    for step in config["steps"]:
-        kwargs = {}
-        if step in single_state_steps:
-            kwargs |= {k: v[0](**v[1]) for k, v in single_state_steps[step].items()}
+    kwargs = {}
+    for step, data_keywords in single_state_steps.items():
+        if step in config["steps"]:
+            kwargs |= data_keywords
     if kwargs == {}:
         return None
     else:
@@ -43,29 +49,31 @@ def get_rnav_sample(sample, target):
 def get_rnav_dance_samples(sample, target):
     with open(f"results/dancemapper/{sample}_{target}-reactivities.txt") as dance_file:
         line = dance_file.readline()
-    # split first line by ";", take first part, split by space character, take first part as integer
+    # split by ";", take first part, split by " ", take first part as integer
     components = int(line.split(';')[0].split(' ')[0])
     dance_samples = []
     for component in range(components):
         multi_state_steps = {
-            "dancemapper_fit": {"dancemap": [rnav.data.DanceMaP, {"input_data": f"results/dancemapper/{sample}_{target}-reactivities.txt", "component": component}]},
+            "dancemapper_fit": {
+                "dancemap": {"dancemap": f"results/dancemapper/{sample}_{target}-reactivities.txt", "component": component}
+            },
             "dancemapper_rings_pairs": {
-                "ringmap": [rnav.data.RINGMaP, {"input_data": f"results/dancemapper/{sample}_{target}-{component}-rings.txt", "sequence": "sequence"}],
-                "pairmap": [rnav.data.PAIRMaP, {"input_data": f"results/dancemapper/{sample}_{target}-{component}-pairmap.txt", "sequence": "sequence"}],
+                "ringmap": {"ringmap": f"results/dancemapper/{sample}_{target}-{component}-rings.txt", "sequence": "sequence"},
+                "pairmap": {"pairmap": f"results/dancemapper/{sample}_{target}-{component}-pairmap.txt", "sequence": "sequence"},
             },
             "fold_cluster": {
-                "ss_cluster": [rnav.data.SecondaryStructure, {"input_data": f"results/dancemapper/{sample}_{target}_nopairs-{component}.ct"}],
-                "pp_cluster": [rnav.data.PairingProbability, {"input_data": f"results/dancemapper/{sample}_{target}_nopairs-{component}.dp", "sequence": "sequence"}],
+                "ss_cluster": {"ss": f"results/dancemapper/{sample}_{target}_nopairs-{component}.ct"},
+                "pp_cluster": {"pairprob": f"results/dancemapper/{sample}_{target}_nopairs-{component}.dp", "sequence": "sequence"},
             },
             "fold_cluster_pairs": {
-                "ss_cluster_pairs": [rnav.data.SecondaryStructure, {"input_data": f"results/dancemapper/{sample}_{target}_pairs-{component}.ct"}],
-                "pp_cluster_pairs": [rnav.data.PairingProbability, {"input_data": f"results/dancemapper/{sample}_{target}_pairs-{component}.dp", "sequence": "sequence"}],
+                "ss_cluster_pairs": {"ss": f"results/dancemapper/{sample}_{target}_pairs-{component}.ct"},
+                "pp_cluster_pairs": {"pairprob": f"results/dancemapper/{sample}_{target}_pairs-{component}.dp", "sequence": "sequence"},
             },
         }
         kwargs = {}
-        for step in config["steps"]:
-            if step in multi_state_steps:
-                kwargs = {k: v[0](**v[1]) for k, v in multi_state_steps[step].items()}
+        for step, data_keywords in multi_state_steps.items():
+            if step in config["steps"]:
+                kwargs |= data_keywords
         if kwargs == {}:
             return None
         dance_samples.append(

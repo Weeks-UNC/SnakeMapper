@@ -51,7 +51,7 @@ def get_RNAstructure_constraints_parameter(wildcards, input):
     if config["samples"][wildcards.sample]["dms"] is True:
         return f"--dmsnt results/shapemapper/{wildcards.sample}_{wildcards.target}.dms"
     if config["samples"][wildcards.sample]["dms"] is False:
-        return f"--SHAPE results/shapemapper/{wildcards.sample}_{wildcards.target}.SHAPE"
+        return f"--SHAPE results/shapemapper/{wildcards.sample}_{wildcards.target}.shape"
 
 
 resources = {
@@ -77,7 +77,8 @@ output_patterns = {
         "profile": "results/shapemapper/{sample}_{target}_profile.txt",
         "mod_parsed_mut": "results/shapemapper/{sample}_Modified_{target}_parsed.mut",
         "unt_parsed_mut": "results/shapemapper/{sample}_Untreated_{target}_parsed.mut",
-        "temp": temp(directory("results/shapemapper/{sample}_{target}_temp")),
+        # TODO: is this meant to disappear? if so, remove it, specify a fixed temp dir
+        # "temp": temp(directory("results/shapemapper/{sample}_{target}_temp")),
         "profiles": report("results/shapemapper/{sample}_{target}_profiles.pdf", category="{sample}_{target}"),
         "histograms": report("results/shapemapper/{sample}_{target}_histograms.pdf", category="{sample}_{target}"),
         "depths": report("results/shapemapper/{sample}_{target}_mapped_depths.pdf", category="{sample}_{target}"),

@@ -17,7 +17,7 @@ rule shapemapper:
         {params.shapemapper_exe} \
             --out results/shapemapper/ \
             --log {log} \
-            --temp {output.temp} \
+            --temp results/shapemapper/temp/ \
             --nproc {threads} \
             {params.samples} {params.config}
     """
