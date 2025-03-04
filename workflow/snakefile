@@ -1,8 +1,9 @@
 from pathlib import Path
 
-from snakemake.utils import validate
+# TODO: validate the config file format
+# from snakemake.utils import validate
 
-
+# TODO: host a compatible docker image on dockerhub
 # container: "docker://psirving/SnakeMapper:latest"
 
 configfile: "config/config.yaml"

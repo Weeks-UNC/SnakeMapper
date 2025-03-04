@@ -7,7 +7,6 @@ rule fold_nodata:
         config=get_parameters("fold_nodata"),
         **config["exe_locations"],
     resources: **resources["RNAstructure"]
-    conda: "envs/rnavigate.yml"
     group: "nodata"
     shell: """
         {params.fold} {input} {output.ct} {params.config} \
@@ -29,7 +28,6 @@ rule fold_popavg:
         constraints=get_RNAstructure_constraints_parameter,
         **config["exe_locations"],
     resources: **resources["RNAstructure"]
-    conda: "envs/rnavigate.yml"
     group: "{sample}_{target}_popavg"
     shell: """
         {params.fold} \
@@ -56,7 +54,6 @@ rule fold_popavg_pairs:
         constraints=get_RNAstructure_constraints_parameter,
         **config["exe_locations"],
     resources: **resources["RNAstructure"]
-    conda: "envs/rnavigate.yml"
     group: "{sample}_{target}_popavg_pairs"
     shell: """
         {params.fold} {input.fasta} {output.ct} \
