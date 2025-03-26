@@ -53,14 +53,14 @@ def get_RNAstructure_constraints_parameter(wildcards, input):
     if config["samples"][wildcards.sample]["dms"] is False:
         return f"--SHAPE results/shapemapper/{wildcards.sample}_{wildcards.target}.shape"
 
-
+# TODO: compute based on inputs, auto restart with double in profile
 resources = {
     "RNAstructure": {"mem": 8000, "runtime": 60},
     "shapemapper": {"mem": 8000, "runtime": 60*24, "threads": 8},
     "ringmapper": {"mem": 8000, "runtime": 60*4},
     "pairmapper": {"mem": 8000, "runtime": 60*4},
     "dancemapper_fit": {"mem": 8000, "runtime": 60*24*5},
-    "dancemapper_rings_pairs": {"mem": 30000, "runtime": 60*24},
+    "dancemapper_rings_pairs": {"mem": 60000, "runtime": 60*24},
 }
 
 output_patterns = {
