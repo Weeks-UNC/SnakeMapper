@@ -10,7 +10,7 @@ rule shapemapper:
         config=get_parameters("shapemapper"),
     threads: resources["shapemapper"]["threads"]
     resources:
-        mem=resources["shapemapper"]["mem"],
+        mem_mb=resources["shapemapper"]["mem_mb"],
         runtime=resources["shapemapper"]["runtime"],
     group: "{sample}_{target}_popavg"
     shell: """

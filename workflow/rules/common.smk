@@ -55,12 +55,12 @@ def get_RNAstructure_constraints_parameter(wildcards, input):
 
 # TODO: compute based on inputs, auto restart with double in profile
 resources = {
-    "RNAstructure": {"mem": 8000, "runtime": 60},
-    "shapemapper": {"mem": 8000, "runtime": 60*24, "threads": 8},
-    "ringmapper": {"mem": 8000, "runtime": 60*4},
-    "pairmapper": {"mem": 8000, "runtime": 60*4},
-    "dancemapper_fit": {"mem": 8000, "runtime": 60*24*5},
-    "dancemapper_rings_pairs": {"mem": 60000, "runtime": 60*24},
+    "RNAstructure": {"mem_mb": 8000, "runtime": 60},
+    "shapemapper": {"mem_mb": 8000, "runtime": 60*24, "threads": 8},
+    "ringmapper": {"mem_mb": 8000, "runtime": 60*4},
+    "pairmapper": {"mem_mb": 8000, "runtime": 60*4},
+    "dancemapper_fit": {"mem_mb": 8000, "runtime": 60*24*5},
+    "dancemapper_rings_pairs": {"mem_mb": 60000, "runtime": 60*24},
 }
 
 output_patterns = {
