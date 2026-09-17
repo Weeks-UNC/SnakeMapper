@@ -13,11 +13,11 @@ conda deactivate
 snakemake \
     --use-conda \
         --conda-frontend conda \
-        --conda-prefix /proj/kweeks/bin/snakemake_envs/ \
+        --conda-prefix /path/to/snakemake_envs/ \
     --cores 8 \
     --rerun-incomplete \
     --slurm \
-    --default-resources slurm_account=rc_kweeks_pi \
+    --default-resources slurm_account=your_slurm_account \
     --jobs 20 \
     --latency-wait 60
 

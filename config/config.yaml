@@ -1,10 +1,10 @@
 # if these are not installed in your path, an absolute path should be specified here.
 exe_locations:
-    shapemapper: /proj/kweeks/bin/shapemapper-2.3.0/shapemapper
-    ringmapper: /proj/kweeks/bin/RingMapper_v1.2/ringmapper.py
-    pairmapper: /proj/kweeks/bin/RingMapper_v1.2/pairmapper.py
-    dancemapper: /proj/kweeks/bin/DanceMapper/DanceMapper.py
-    foldclusters: /proj/kweeks/bin/DanceMapper/foldClusters.py
+    shapemapper: shapemapper
+    ringmapper: ringmapper.py
+    pairmapper: pairmapper.py
+    dancemapper: DanceMapper.py
+    foldclusters: foldClusters.py
     fold: Fold-smp
     partition: partition-smp
     probabilityplot: ProbabilityPlot
@@ -22,27 +22,29 @@ exe_locations:
 # All output files will be prefixed with {sample}_{target}. (underscore added by snakemake)
 
 # List of samples and their fastq files
+# Below is an example entry showing both supported ways of specifying input
+# fastq files: explicit R1/R2 paths, or a folder containing them.
 samples:
-    sample1:
-        target: fastas/myrna.fa
+    example_sample1:
+        target: fastas/example_target.fa
         amplicon: True
-        primers: fastas/myrna_primers.fa
+        primers: fastas/example_target_primers.fa
         dms: True
         modified:
-            R1: data/sample1_R1.fastq.gz
-            R2: data/sample1_R2.fastq.gz
+            R1: data/example_sample1_modified_R1.fastq.gz
+            R2: data/example_sample1_modified_R2.fastq.gz
         untreated:
-            R1: data/sample3_R1.fastq.gz
-            R2: data/sample3_R2.fastq.gz
-    sample2:
-        target: fastas/myrna.fa
+            R1: data/example_sample1_untreated_R1.fastq.gz
+            R2: data/example_sample1_untreated_R2.fastq.gz
+    example_sample2:
+        target: fastas/example_target.fa
         amplicon: True
-        primers: fastas/myrna_primers.fa
+        primers: fastas/example_target_primers.fa
         dms: True
         modified:
-            folders: data/sample2/
+            folders: data/example_sample2_modified/
         untreated:
-            folders: data/sample4/
+            folders: data/example_sample2_untreated/
 
 # List of steps to run. Comment out steps you don't want to run with a "#".
 # NOTE: DanceMapper runs in two steps, model fitting and calculation of RINGs/PAIRs
