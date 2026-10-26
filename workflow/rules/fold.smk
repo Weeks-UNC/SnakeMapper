@@ -117,7 +117,7 @@ rule fold_cluster_pairs:
         python {params.foldclusters} {input.reactivities} \
             results/dancemapper/{wildcards.sample}_{wildcards.target}_pairs \
             --bp results/dancemapper/{wildcards.sample}_{wildcards.target} \
-            {params.config} --prob
+            {params.config} --prob \
             > {log.prob}
     """
 

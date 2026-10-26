@@ -16,7 +16,8 @@ snakemake \
         --conda-prefix /path/to/snakemake_envs/ \
     --cores 8 \
     --rerun-incomplete \
-    --slurm \
+    --executor slurm \
+    --keep-going \
     --default-resources slurm_account=your_slurm_account \
     --jobs 20 \
     --latency-wait 60

@@ -41,7 +41,7 @@ rule ringmapper:
             --fasta {input.fasta} \
             --untreated {input.untreated} \
             {input.modified} \
-            {output.rings}
+            {output.rings} \
         > {log}
     """
 
@@ -116,6 +116,6 @@ rule dancemapper_rings_pairs:
             --profile {input.profile} \
             --untreated_parsed {input.untreated} \
             --modified_parsed {input.modified} \
-            --outputprefix results/dancemapper/{wildcards.sample}_{wildcards.target}
+            --outputprefix results/dancemapper/{wildcards.sample}_{wildcards.target} \
         > {log}
     """
