@@ -50,13 +50,18 @@ automatically by Snakemake into per-rule conda environments via
    snakemake --use-conda --cores 8
    ```
 
-   `map_suite.sbatch` is an example Slurm submission script for running on
-   an HPC cluster; adjust the resource requests and `slurm_account` for your
-   environment. To run this on a cluster that uses Slurm:
+   On an HPC cluster running SLURM, use `map_suite_nohup.sh` instead. It will run the
+   workflow controller on the login node in a detached state with no time limit, and
+   it doesn't end when you log out. This is preferred over submitting the workflow
+   controller as a SLURM job because the controller requires very little resources but
+   can run for a long time. The controller timing out can be very costly.
 
    ```bash
-   sbatch map_suite.sbatch
+   ./map_suite_nohup.sh
    ```
+
+   Edit the three paths at the top of the script for your environment. Start
+   it from a plain login node shell. The script will refuse to run inside a SLURM job.
 
 There is currently no nicely bundled example dataset to run out of the box.
 Supply your own fastq/fasta inputs per the config format above.
